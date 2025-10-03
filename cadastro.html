@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Produtos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1> Cadastro de Produtos</h1>
+
+    <form id="formCadastro">
+        <input type="text" id="nome" placeholder="Nome do produto" required>
+        <input type="number" id="preco" placeholder="Preço" required>
+        <input type="text" id="categoria" placeholder="Categoria" required>
+        <input type="text" id="origem" placeholder="Origem" required>
+        <input type="text" id="lote" placeholder="Lote" required>
+        <input type="date" id="validade" required>
+        <button type="submit">Salvar</button>
+    </form>
+
+    <a href="lista.html">← Ir para lista de produtos</a>
+
+    <script>
+        // Captura o formulário
+        const form = document.getElementById("formCadastro");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); 
+
+            // Recupera os produtos já salvos 
+            let produtos = JSON.parse(localStorage.getItem("produtos") || "[]");
+
+            // Cria objeto do novo produto
+            const novoProduto = {
+                id: Date.now(), // gera ID único
+                nome: document.getElementById("nome").value,
+                preco: parseFloat(document.getElementById("preco").value),
+                categoria: document.getElementById("categoria").value,
+                origem: document.getElementById("origem").value,
+                lote: document.getElementById("lote").value,
+                validade: document.getElementById("validade").value
+            };
+
+            // Adiciona o novo produto na lista
+            produtos.push(novoProduto);
+
+            // Salva de volta no localStorage
+            localStorage.setItem("produtos", JSON.stringify(produtos));
+
+            // Redireciona para lista de produtos
+            window.location.href = "lista.html";
+        });
+    </script>
+</body>
+</html>

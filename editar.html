@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Produto</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>✏️ Editar Produto</h1>
+
+    <form id="formEditar">
+        <input type="text" id="nome" placeholder="Nome do produto" required>
+        <input type="number" id="preco" placeholder="Preço" required>
+        <input type="text" id="categoria" placeholder="Categoria" required>
+        <input type="text" id="origem" placeholder="Origem" required>
+        <input type="text" id="lote" placeholder="Lote" required>
+        <input type="date" id="validade" required>
+        <button type="submit">Salvar Alterações</button>
+    </form>
+
+    <a href="lista.html">← Voltar para lista</a>
+
+    <script>
+        const formEditar = document.getElementById("formEditar");
+
+        // Pega o ID do produto que está sendo editado
+        const idEditando = localStorage.getItem("produtoEditando");
+
+        // Recupera a lista de produtos
+        let produtos = JSON.parse(localStorage.getItem("produtos") || "[]");
+
+        // Encontra o produto pelo ID
+        const produto = produtos.find(p => p.id == idEditando);
+
+        // Preenche os campos do formulário com os dados existentes
+        if (produto) {
+            document.getElementById("nome").value = produto.nome;
+            document.getElementById("preco").value = produto.preco;
+            document.getElementById("categoria").value = produto.categoria;
+            document.getElementById("origem").value = produto.origem;
+            document.getElementById("lote").value = produto.lote;
+            document.getElementById("validade").value = produto.validade;
+        }
+
+        // Atualiza o produto ao enviar o formulário
+        formEditar.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            produto.nome = document.getElementById("nome").value;
+            produto.preco = parseFloat(document.getElementById("preco").value);
+            produto.categoria = document.getElementById("categoria").value;
+            produto.origem = document.getElementById("origem").value;
+            produto.lote = document.getElementById("lote").value;
+            produto.validade = document.getElementById("validade").value;
+
+            localStorage.setItem("produtos", JSON.stringify(produtos));
+            localStorage.removeItem("produtoEditando"); // limpa a chave
+            window.location.href = "lista.html"; // volta para a lista
+        });
+    </script>
+</body>
+</html>
